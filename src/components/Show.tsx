@@ -3,16 +3,16 @@ import "../css/Show.css";
 const Show = () => {
   return (
     <div className="result">
-      <div className="show-years">
-        <span>--</span>
+      <div>
+        <span id="show-years">--</span>
         <label>years</label>
       </div>
-      <div className="show-months">
-        <span>--</span>
+      <div>
+        <span id="show-months">--</span>
         <label>months</label>
       </div>
-      <div className="show-days">
-        <span>--</span>
+      <div>
+        <span id="show-days">--</span>
         <label>days</label>
       </div>
     </div>

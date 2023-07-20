@@ -69,14 +69,15 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 
 ### What I learned
 
+- [BootStrap](https://getbootstrap.com)
+- [Basics tutorila to React](https://www.youtube.com/watch?v=SqcY0GlETPk)
+
 #### How to create React project
 
 To create React project we use `npx create-react-app name`. To create React App node.js needs to be installed. To start the application use `npm start`. In my case I use `npm run dev`.
 
 
 
-- [BootStrap](https://getbootstrap.com)
-- [Basics tutorila to React](https://www.youtube.com/watch?v=SqcY0GlETPk)
 
 ### Continued development
 
@@ -93,8 +94,7 @@ Use this section to outline areas that you want to continue focusing on in futur
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
+- Frontend Mentor - [@Oppenheimer450](https://www.frontendmentor.io/profile/yourusername)
 - Twitter - [@yourusername](https://www.twitter.com/yourusername)
 
 **Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
