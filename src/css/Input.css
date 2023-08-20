@@ -31,6 +31,20 @@
     padding: 4px 0 4px 12px;
     margin-top: 0.3rem;
     font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    color: hsl(0, 0%, 8%);
+}
+
+.inputs>div>input.empty {
+    border: solid 1px hsl(0, 100%, 67%);
+}
+
+.inputs>div>input:focus {
+    border: solid 1px hsl(259, 100%, 65%);
+    outline: none;
+    caret-color: hsl(259, 100%, 65%);
+
 }
 
 .inputs>div>input::placeholder {
@@ -38,3 +52,15 @@
     font-weight: 700;
     font-size: 1rem;
 }
+
+.inputs>div>label.error-msg {
+    
+    font-size: 8px;
+    color: hsl(0, 100%, 67%);
+    font-style: italic;
+    margin-top: 3px;
+    letter-spacing: 0;
+    font-weight: 400;
+    text-transform: none;
+}
+

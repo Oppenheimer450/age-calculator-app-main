@@ -22,12 +22,35 @@ const Button = () => {
 };
 
 function handleEvent() {
-    // take input
+
+    // get input elements
     const dayInput = document.getElementById("day") as HTMLInputElement;
     const monthInput = document.getElementById("month") as HTMLInputElement;
     const yearInput = document.getElementById("year") as HTMLInputElement;
+    
+    // IIFE for reset error indicators
+    (function resetErrorHandlig() {
 
-    // convert from string to number
+        // reset input styling
+        dayInput.classList.remove('empty');
+        monthInput.classList.remove('empty');
+        yearInput.classList.remove('empty');
+
+        // reset lebels styling
+        const dayLabel = document.getElementById('label-day') as HTMLElement
+        dayLabel.style.color = 'hsl(0, 1%, 44%)';
+        const monthLabel = document.getElementById('label-month') as HTMLElement
+        monthLabel.style.color = 'hsl(0, 1%, 44%)';
+        const yearLabel = document.getElementById('label-year') as HTMLElement
+        yearLabel.style.color = 'hsl(0, 1%, 44%)';
+
+        // reset error message
+        showErrorMesageDay(' ');
+        showErrorMesageMonth(' ');
+        showErrorMesageYear(' ');
+    })()    
+
+    // get input
     const dayBirth: number = parseInt(dayInput.value, 10);
     const monthBirth: number = parseInt(monthInput.value, 10);
     const yearBirth: number = parseInt(yearInput.value, 10);
@@ -66,16 +89,39 @@ function validityCheck(dayBirth: number, monthBirth: number, yearBirth: number):
         // show error
         const dayInput = document.getElementById('day') as HTMLElement;
         dayInput.classList.add('empty')
+        
+        const dayLabel = document.getElementById('label-day') as HTMLElement
+        dayLabel.style.color = 'hsl(0, 100%, 67%)';
+
+        showErrorMesageDay('This field is required');
     }
 
     if (Number.isNaN(monthBirth)) {
         console.error("Month field is required!");
         validityCheckOk = false;
+
+        // show error
+        const monthInput = document.getElementById('month') as HTMLElement;
+        monthInput.classList.add('empty')
+        
+        const monthLabel = document.getElementById('label-month') as HTMLElement
+        monthLabel.style.color = 'hsl(0, 100%, 67%)';
+
+        showErrorMesageMonth('This field is required');
     }
 
     if (Number.isNaN(yearBirth)) {
         console.error("Year field is required!")
         validityCheckOk = false;
+
+        // show error
+        const yearInput = document.getElementById('year') as HTMLElement;
+        yearInput.classList.add('empty')
+        
+        const yearLabel = document.getElementById('label-year') as HTMLElement
+        yearLabel.style.color = 'hsl(0, 100%, 67%)';
+
+        showErrorMesageYear('This field is required');
     }
 
     if (!validityCheckOk) {
@@ -98,6 +144,19 @@ function validityCheck(dayBirth: number, monthBirth: number, yearBirth: number):
     }
 
     return validityCheckOk;
+}
+
+function showErrorMesageDay(msg: string) {
+    const dayLabel = document.getElementById('error-msg-day') as HTMLElement;
+    dayLabel.innerText = msg;
+}
+function showErrorMesageMonth(msg: string) {
+    const dayLabel = document.getElementById('error-msg-month') as HTMLElement;
+    dayLabel.innerText = msg;
+}
+function showErrorMesageYear(msg: string) {
+    const dayLabel = document.getElementById('error-msg-year') as HTMLElement;
+    dayLabel.innerText = msg;
 }
 
 
