@@ -1,46 +1,7 @@
-import { func } from "prop-types";
 import "../css/Button.css";
 
 const Button = () => {
-  const handleEvent = function () {
-    // take input
-    const dayInput = document.getElementById("day") as HTMLInputElement;
-    const monthInput = document.getElementById("month") as HTMLInputElement;
-    const yearInput = document.getElementById("year") as HTMLInputElement;
-
-    const dayBirth: number = parseInt(dayInput.value, 10);
-    const monthBirth: number = parseInt(monthInput.value, 10);
-    const yearBirth: number = parseInt(yearInput.value, 10);
-
-    // check validity of input
-    if (
-      !(dayBirth != null && isNumberBetween(dayBirth, 1, 31)) ||
-      !(monthBirth != null && isNumberBetween(monthBirth, 1, 12))
-    ) {
-        console.error("Wrong day or month.");
-        return;
-    }
-
-    if (!isValidDate(dayBirth, monthBirth, yearBirth)) {
-        console.error("Date is not valid!");
-        return;
-    }
-
-    // calculate age
-    const {days, months, years } = getDifferenceInDaysMonthsYears(dayBirth, monthBirth, yearBirth);
-    console.log('Time in between: days: ' + days + ' months: ' + months + ' years ' + years);
-
-    // show age
-    const daySpan = document.getElementById('show-days') as HTMLSpanElement;
-    const monthSpan = document.getElementById('show-months') as HTMLSpanElement;
-    const yearSpan = document.getElementById('show-years') as HTMLSpanElement;
-
-    daySpan.innerText = days.toString();
-    monthSpan.innerText = months.toString();
-    yearSpan.innerText = years.toString();
-
-  };
-
+  
   return (
     <div className="submit-button">
       <hr />
@@ -59,6 +20,86 @@ const Button = () => {
     </div>
   );
 };
+
+function handleEvent() {
+    // take input
+    const dayInput = document.getElementById("day") as HTMLInputElement;
+    const monthInput = document.getElementById("month") as HTMLInputElement;
+    const yearInput = document.getElementById("year") as HTMLInputElement;
+
+    // convert from string to number
+    const dayBirth: number = parseInt(dayInput.value, 10);
+    const monthBirth: number = parseInt(monthInput.value, 10);
+    const yearBirth: number = parseInt(yearInput.value, 10);
+
+    // check input
+    if (!validityCheck(dayBirth, monthBirth, yearBirth)) {
+        return;
+    }
+
+    // calculate age
+    const {days, months, years } = getDifferenceInDaysMonthsYears(dayBirth, monthBirth, yearBirth);
+    console.log('Time in between: days: ' + days + ' months: ' + months + ' years ' + years);
+
+    // get elements in show section
+    const daySpan = document.getElementById('show-days') as HTMLSpanElement;
+    const monthSpan = document.getElementById('show-months') as HTMLSpanElement;
+    const yearSpan = document.getElementById('show-years') as HTMLSpanElement;
+
+    // show age
+    daySpan.innerText = days.toString();
+    monthSpan.innerText = months.toString();
+    yearSpan.innerText = years.toString();
+
+};
+
+function validityCheck(dayBirth: number, monthBirth: number, yearBirth: number): boolean {
+
+    let validityCheckOk: boolean = true;
+
+
+    // empty input
+    if (Number.isNaN(dayBirth)) {
+        console.error("Day field is required!");
+        validityCheckOk = false;
+
+        // show error
+        const dayInput = document.getElementById('day') as HTMLElement;
+        dayInput.classList.add('empty')
+    }
+
+    if (Number.isNaN(monthBirth)) {
+        console.error("Month field is required!");
+        validityCheckOk = false;
+    }
+
+    if (Number.isNaN(yearBirth)) {
+        console.error("Year field is required!")
+        validityCheckOk = false;
+    }
+
+    if (!validityCheckOk) {
+        return validityCheckOk;
+    }
+
+    // check validity of input
+    if (!(isNumberBetween(dayBirth, 1, 31))) {
+        console.error("Wrong day!");
+        validityCheckOk = false;
+    }
+    if (!(isNumberBetween(monthBirth, 1, 12))) {
+        console.error("Wrong month!");
+        validityCheckOk = false;
+    }
+
+    if (!isValidDate(dayBirth, monthBirth, yearBirth)) {
+        console.error("Date is not valid!");
+        validityCheckOk = false;
+    }
+
+    return validityCheckOk;
+}
+
 
 function isNumberBetween(n: number, lowest: number, highest: number): boolean {
   try {
@@ -83,7 +124,10 @@ function isValidDate(day: number, month: number, year: number) {
 }
 
 function getDifferenceInDaysMonthsYears(day: number, month: number, year: number): { days: number, months: number, years: number } {
+    // input date
     const startDate: Date = new Date(year, month - 1, day);
+    
+    // today's date
     const endDate: Date = new Date();
     
     // Calculate the difference in milliseconds between the two dates
