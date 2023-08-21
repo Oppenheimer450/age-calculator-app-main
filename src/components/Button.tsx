@@ -1,4 +1,5 @@
 import "../css/Button.css";
+import moment from 'moment'
 
 const Button = () => {
   
@@ -150,7 +151,16 @@ function validityCheck(dayBirth: number, monthBirth: number, yearBirth: number):
         showErrorMesageYear('Must be in the past');
     }
 
-    // TODO check if date actually exists that year that month (30/31/28)
+    if (!isValidDate(dayBirth, monthBirth, yearBirth)) {
+        console.error("Must be valid date")
+        isOk = false;
+        
+        changeInputToErrorState('day', 'label-day');
+        changeInputToErrorState('month', 'label-month');
+        changeInputToErrorState('year', 'label-year');
+
+        showErrorMesageDay('Must be a valid date');
+    }
 
     return isOk;
 }
@@ -178,18 +188,9 @@ function isNumberBetween(n: number, lowest: number, highest: number): boolean {
     return n >= lowest && n <= highest;
 }
 
-function isValidDate(day: number, month: number, year: number) {
-    const date = new Date(year, month - 1, day); // Months are 0-based in JavaScript, so we subtract 1 from the month
-    const currentDate = new Date();
-
-    console.log(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
-
-    return (
-        date.getFullYear() === year &&
-        date.getMonth() === month - 1 &&
-        date.getDate() === day &&
-        date < currentDate
-      );
+function isValidDate(day: number, month: number, year: number): boolean {
+    console.log(day + '/' + month + '/' + year)
+    return moment(day + '/' + month + '/' + year, 'DD/M/YYYY', true).isValid();
 }
 
 function getDifferenceInDaysMonthsYears(day: number, month: number, year: number): { days: number, months: number, years: number } {
