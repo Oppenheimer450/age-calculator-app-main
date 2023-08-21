@@ -36,10 +36,6 @@
     color: hsl(0, 0%, 8%);
 }
 
-.inputs>div>input.empty {
-    border: solid 1px hsl(0, 100%, 67%);
-}
-
 .inputs>div>input:focus {
     border: solid 1px hsl(259, 100%, 65%);
     outline: none;

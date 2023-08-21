@@ -32,9 +32,12 @@ function handleEvent() {
     (function resetErrorHandlig() {
 
         // reset input styling
-        dayInput.classList.remove('empty');
-        monthInput.classList.remove('empty');
-        yearInput.classList.remove('empty');
+        const inputDay = document.getElementById('day') as HTMLElement;
+        inputDay.style.border = 'solid 1px hsl(0, 0%, 86%)'
+        const inputMonth = document.getElementById('month') as HTMLElement;
+        inputMonth.style.border = 'solid 1px hsl(0, 0%, 86%)'
+        const inputYear = document.getElementById('year') as HTMLElement;
+        inputYear.style.border = 'solid 1px hsl(0, 0%, 86%)'
 
         // reset lebels styling
         const dayLabel = document.getElementById('label-day') as HTMLElement
@@ -55,10 +58,11 @@ function handleEvent() {
     const monthBirth: number = parseInt(monthInput.value, 10);
     const yearBirth: number = parseInt(yearInput.value, 10);
 
-    // check input
-    if (!validityCheck(dayBirth, monthBirth, yearBirth)) {
-        return;
-    }
+    // check empty input
+    if (!emptyCheck(dayBirth, monthBirth, yearBirth)) { return; }
+
+    // check valid input
+    if (!validityCheck(dayBirth, monthBirth, yearBirth)) { return; }
 
     // calculate age
     const {days, months, years } = getDifferenceInDaysMonthsYears(dayBirth, monthBirth, yearBirth);
@@ -76,74 +80,84 @@ function handleEvent() {
 
 };
 
-function validityCheck(dayBirth: number, monthBirth: number, yearBirth: number): boolean {
+function changeInputToErrorState(inputId: string, labelId: string) {
+    
+    // show error
+    const input = document.getElementById(inputId) as HTMLElement;
+    input.style.border = 'solid 1px hsl(0, 100%, 67%)'
+    
+    const label = document.getElementById(labelId) as HTMLElement
+    label.style.color = 'hsl(0, 100%, 67%)';
+}
 
-    let validityCheckOk: boolean = true;
 
+function emptyCheck(dayBirth: number, monthBirth: number, yearBirth: number): boolean {
+    let isOk: boolean = true;
 
     // empty input
     if (Number.isNaN(dayBirth)) {
         console.error("Day field is required!");
-        validityCheckOk = false;
+        isOk = false;
 
-        // show error
-        const dayInput = document.getElementById('day') as HTMLElement;
-        dayInput.classList.add('empty')
-        
-        const dayLabel = document.getElementById('label-day') as HTMLElement
-        dayLabel.style.color = 'hsl(0, 100%, 67%)';
-
+        changeInputToErrorState('day', 'label-day');
         showErrorMesageDay('This field is required');
     }
 
     if (Number.isNaN(monthBirth)) {
         console.error("Month field is required!");
-        validityCheckOk = false;
+        isOk = false;
 
-        // show error
-        const monthInput = document.getElementById('month') as HTMLElement;
-        monthInput.classList.add('empty')
-        
-        const monthLabel = document.getElementById('label-month') as HTMLElement
-        monthLabel.style.color = 'hsl(0, 100%, 67%)';
-
+        changeInputToErrorState('month', 'label-month');
         showErrorMesageMonth('This field is required');
     }
 
     if (Number.isNaN(yearBirth)) {
         console.error("Year field is required!")
-        validityCheckOk = false;
+        isOk = false;
 
-        // show error
-        const yearInput = document.getElementById('year') as HTMLElement;
-        yearInput.classList.add('empty')
-        
-        const yearLabel = document.getElementById('label-year') as HTMLElement
-        yearLabel.style.color = 'hsl(0, 100%, 67%)';
-
+        changeInputToErrorState('year', 'label-year');
         showErrorMesageYear('This field is required');
     }
 
-    if (!validityCheckOk) {
-        return validityCheckOk;
-    }
+    return isOk;
+}
+
+function validityCheck(dayBirth: number, monthBirth: number, yearBirth: number): boolean {
+
+    let isOk: boolean = true;
 
     // check validity of input
     if (!(isNumberBetween(dayBirth, 1, 31))) {
         console.error("Wrong day!");
-        validityCheckOk = false;
+        isOk = false;
+
+        changeInputToErrorState('day', 'label-day');
+        showErrorMesageDay('Must be a valid day');
     }
     if (!(isNumberBetween(monthBirth, 1, 12))) {
         console.error("Wrong month!");
-        validityCheckOk = false;
+        isOk = false;
+
+        changeInputToErrorState('month', 'label-month');
+        showErrorMesageMonth('Must be a valid month');
     }
 
-    if (!isValidDate(dayBirth, monthBirth, yearBirth)) {
-        console.error("Date is not valid!");
-        validityCheckOk = false;
+    if (isInThePast(yearBirth)) {
+        console.error("Must be in the past")
+        isOk = false;
+
+        changeInputToErrorState('year', 'label-year');
+        showErrorMesageYear('Must be in the past');
     }
 
-    return validityCheckOk;
+    // TODO check if date actually exists that year that month (30/31/28)
+
+    return isOk;
+}
+
+function isInThePast(year: number) {
+    const currentDate: Date = new Date();
+    return currentDate.getFullYear() < year;
 }
 
 function showErrorMesageDay(msg: string) {
@@ -161,11 +175,7 @@ function showErrorMesageYear(msg: string) {
 
 
 function isNumberBetween(n: number, lowest: number, highest: number): boolean {
-  try {
     return n >= lowest && n <= highest;
-  } catch (error) {
-    return false;
-  }
 }
 
 function isValidDate(day: number, month: number, year: number) {
