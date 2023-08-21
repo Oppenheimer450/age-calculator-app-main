@@ -60,3 +60,15 @@
     text-transform: none;
 }
 
+
+
+@media screen and (max-width: 600px) {
+    .inputs>div>input {
+        font-size: 3vw;
+        width: 75%;
+    }
+
+    .inputs>div>input::placeholder {
+        font-size: 3vw;
+    }
+}
